@@ -1,0 +1,126 @@
+Single Linked list:
+1.Node structure defination
+struct Node {
+    int data;
+    struct Node* next;
+};
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+//. Inserting a Node at the Beginning of the Linked List
+void insertAtBeginning(struct Node** headRef, int data) {
+    struct Node* newNode = createNode(data);
+    if (newNode == NULL) {
+        return;
+    }
+    newNode->next = *headRef;
+    *headRef = newNode;
+}
+//Inserting a Node at the End of the Linked List
+void insertAtEnd(struct Node** headRef, int data) {
+    struct Node* newNode = createNode(data);
+    if (newNode == NULL) {
+        return;
+    }
+    if (*headRef == NULL) {
+        *headRef = newNode;
+        return;
+    }
+    struct Node* current = *headRef;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+    current->next = newNode;
+}
+//Deleting a Node from the Linked List
+void deleteNode(struct Node** headRef, int key) {
+    struct Node *temp = *headRef, *prev = NULL;
+    if (temp != NULL && temp->data == key) {
+        *headRef = temp->next;
+        free(temp);
+        return;
+    }
+    while (temp != NULL && temp->data != key) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL) {
+        printf("Key not found in the list\n");
+        return;
+    }
+    prev->next = temp->next;
+    free(temp);
+}
+//Double linked list
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+//Creating a New Node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
+    newNode->data = data;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+    return newNode;
+}
+// Inserting a Node at the Beginning of the Double Linked List
+void insertAtBeginning(struct Node** headRef, int data) {
+    struct Node* newNode = createNode(data);
+    if (newNode == NULL) {
+        return;
+    }
+    if (*headRef == NULL) {
+        *headRef = newNode;
+    } else {
+        newNode->next = *headRef;
+        (*headRef)->prev = newNode;
+        *headRef = newNode;
+    }
+}
+//Inserting a Node at the End of the Double Linked List
+void insertAtEnd(struct Node** headRef, int data) {
+    struct Node* newNode = createNode(data);
+    if (newNode == NULL) {
+        return;
+    }
+    if (*headRef == NULL) {
+        *headRef = newNode;
+    } else {
+        struct Node* current = *headRef;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+        newNode->prev = current;
+    }
+}
+//Deleting a Node from the Double Linked List
+void deleteNode(struct Node** headRef, struct Node* delNode) {
+    if (*headRef == NULL || delNode == NULL) {
+        return;
+    }
+    if (*headRef == delNode) {
+        *headRef = delNode->next;
+    }
+    if (delNode->next != NULL) {
+        delNode->next->prev = delNode->prev;
+    }
+    if (delNode->prev != NULL) {
+        delNode->prev->next = delNode->next;
+    }
+    free(delNode);
+}
+
